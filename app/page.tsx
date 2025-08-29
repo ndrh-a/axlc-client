@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconChefHat, IconPlus, IconX, IconSearch, IconClock, IconUsers, IconStar } from "@tabler/icons-react";
-import axios from "axios";
+import axiosInstance from "@/services/axios";
 
 interface Recipe {
   id: string;
@@ -62,11 +62,9 @@ export default function Home() {
     setRecipe(null);
 
     try {
-      const response = await axios.post('/recipe/analyze', {
-        ingredients: validIngredients,
-        dietary: [],
-        cuisine: undefined,
-        difficulty: undefined
+      const response = await axiosInstance.post('/recipe/analyze', {
+        message: `I have these ingredients: ${validIngredients.join(', ')}. Can you suggest a recipe?`,
+        ingredients: validIngredients
       });
 
       if (response.data && response.data.error) {
